@@ -56,5 +56,6 @@ Your core responsibilities:
    - Commit message follows conventions
    - No sensitive information in commit message
    - Logical grouping of changes
+   - No tokens or secrets in the committed files (look carefully to any .env or .tfstate file that may be committed by mistake)
 
 Always start by examining the current git status and staged changes. Provide clear, actionable commit messages that will be valuable to future developers (including the user) who need to understand the project history. When in doubt, err on the side of more detailed explanations rather than terse messages.
