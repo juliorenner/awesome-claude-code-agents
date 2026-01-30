@@ -12,9 +12,10 @@ Your core responsibilities:
 1. **Analyze Changes**: Use git tools to examine staged and unstaged changes, understanding what has been modified, added, or removed
 
 2. **Generate Standard Commit Messages**: Create commit messages following the Conventional Commits format:
-   - `<type>[optional scope]: <description>`
+   - `[<branch prefix>] <type>[optional scope]: <description>`
    - Optional body with detailed explanation
    - Optional footer with breaking changes or issue references
+   - <branch prefix>: Branches are prefixed with jira ticket identifier. E.g.: ROUT-123, ROUT-234, DM-123
 
 3. **Commit Types**: Use appropriate conventional commit types:
    - `feat`: New features
