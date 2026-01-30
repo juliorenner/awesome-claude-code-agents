@@ -101,6 +101,88 @@ After analyzing all code, provide:
 3. **Quick Wins**: Low-effort, high-impact optimizations
 4. **Architecture Recommendations**: Structural changes for long-term performance
 
+## Action Plan for Performance Optimization
+
+### Phase 1: Establish Baseline Metrics
+Before making any changes, establish a performance baseline:
+
+1. **Set Up a Non-Production Test Environment**
+   - Use a local development environment or staging/test environment
+   - **Never run performance tests against production databases**
+   - Ensure the test environment mirrors production data volumes and patterns as closely as possible
+   - Seed the database with realistic test data to simulate production workloads
+
+2. **Run Initial Performance Tests**
+   - Use established load testing tools rather than building custom solutions:
+     - **k6** (recommended): Modern, developer-friendly load testing tool with excellent metrics
+     - **Artillery**: Great for API and microservices testing with detailed reporting
+     - **pgbench**: For PostgreSQL-specific benchmarking
+   - Record baseline metrics: response times (p50, p95, p99), throughput, error rates
+   - Capture database metrics: query execution times, connection pool usage, lock waits
+
+3. **Document the Baseline**
+   - Create a benchmark report with current performance numbers
+   - Identify the specific endpoints, queries, or operations being optimized
+   - Set target improvement goals (e.g., "reduce p95 latency by 50%")
+
+### Phase 2: Iterative Optimization
+Apply optimizations incrementally with continuous measurement:
+
+1. **Make One Change at a Time**
+   - Implement a single optimization from the analysis findings
+   - This allows accurate attribution of performance improvements
+
+2. **Measure After Each Change**
+   - Re-run the same load tests used for the baseline
+   - Compare metrics against the baseline and previous iteration
+   - Document the impact of each change:
+     ```
+     Change: Added batch insert for user records
+     Before: 450ms p95, 12 queries per request
+     After: 120ms p95, 2 queries per request
+     Improvement: 73% latency reduction
+     ```
+
+3. **Validate Data Integrity**
+   - Verify that optimizations haven't introduced data correctness issues
+   - Run integration tests after each change
+   - Check for race conditions under concurrent load
+
+4. **Iterate or Rollback**
+   - If metrics improve, commit the change and proceed to the next optimization
+   - If metrics worsen or stay flat, rollback and investigate before proceeding
+
+### Phase 3: Validation and Documentation
+After completing optimizations:
+
+1. **Run Comprehensive Load Tests**
+   - Test with sustained load to verify stability
+   - Test with spike loads to verify behavior under stress
+   - Verify connection pool and resource usage remain healthy
+
+2. **Create Before/After Report**
+   - Summarize all optimizations applied
+   - Document total performance improvement vs. baseline
+   - Note any trade-offs or caveats
+
+### Recommended Testing Tools
+
+| Tool | Best For | Key Features |
+|------|----------|--------------|
+| **k6** | API load testing | JavaScript-based, excellent metrics, CI/CD integration |
+| **Artillery** | HTTP/WebSocket testing | YAML config, detailed reports, scenario support |
+| **pgbench** | PostgreSQL benchmarking | Built-in, transaction-level testing |
+| **pg_stat_statements** | Query analysis | Identify slow queries, execution counts |
+
+**Avoid building custom load testing scripts** - established tools provide:
+- Accurate timing measurements
+- Proper concurrent connection handling
+- Statistical analysis (percentiles, histograms)
+- Reproducible test scenarios
+- Integration with monitoring systems
+
+---
+
 ## Important Guidelines
 
 - Always consider the context and scale of the application
